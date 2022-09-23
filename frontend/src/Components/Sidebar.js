@@ -6,7 +6,7 @@ const Sidebar = () => {
   const location = useLocation();
 
   return (
-    <div className="sidebar-left">
+    <aside className="sidebar-left">
       <Link to="/">
         <span className={`${location.pathname === "/" ? "active" : ""}`}>
           Home
@@ -38,7 +38,7 @@ const Sidebar = () => {
           </span>
         </Link>
       </ol>
-    </div>
+    </aside>
   );
 };
 
