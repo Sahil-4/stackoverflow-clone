@@ -228,7 +228,7 @@
 
 .all-tags {
     height: fit-content;
-    width: 70vw;
+    width: 75vw;
     display: flex;
     flex-wrap: wrap;
 }
@@ -252,4 +252,37 @@
 
 .tag div {
     margin: 12px 0;
+}
+
+.users-profile-container {
+    height: fit-content;
+    width: 75vw;
+    margin: 0 15px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.all-profiles {
+    height: fit-content;
+    width: 75vw;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.profile-card {
+    overflow: hidden;
+    border: 1px solid;
+    margin: 13px;
+}
+
+.profile-card div img {
+    height: 120px;
+    width: 120px;
+    display: block;
+    margin: 0 auto;
+    object-fit: contain;
+}
+
+.profile-card .info {
+    margin: 5px;
 }
