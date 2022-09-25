@@ -18,9 +18,7 @@ const Sidebar = () => {
         <Link to="/questions">
           <span
             className={`${
-              location.pathname === "/questions"
-                ? "active question"
-                : "question"
+              location.pathname === "/questions" ? "active q-span" : "q-span"
             }`}
           >
             <img src={Globe} alt="questions" />
