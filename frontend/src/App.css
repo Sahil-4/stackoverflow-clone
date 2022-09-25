@@ -105,7 +105,7 @@
 .watched-tags {
     margin: 5px;
     border: 1px solid;
-    box-shadow:0px 0px 6px #5a4e4ec6;
+    box-shadow: 0px 0px 6px #5a4e4ec6;
 }
 
 .hot-topics div h4 {
@@ -133,7 +133,7 @@
     border: 1px solid;
 }
 
-.tags-container {
+.watched-tags .tags-container {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -142,7 +142,7 @@
     padding: 10px;
 }
 
-.tags-container span {
+.watched-tags .tags-container span {
     padding: 0px 7px;
     margin: 1px;
     display: block;
@@ -222,30 +222,34 @@
     text-align: end;
 }
 
-/* ***********************************************  *
+.tags-page .tags-container {
+    margin: 0 12px;
+}
 
-
-.question-reach {
+.all-tags {
+    height: fit-content;
+    width: 70vw;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-end;
-    background-color: #00ffff;
+    flex-wrap: wrap;
 }
 
-.question-reach span {
-    display: block;
-    text-align: center;
-    margin: 2px 1px;
+.tag {
+    width: 180px;
+    height: fit-content;
+    overflow: hidden;
+    margin: 6px;
+    padding: 5px;
+    border: 1px solid #000;
+    box-shadow: 0px 0px 6px #c59797;
 }
 
-.question-info {
-    background-color: #ffffff;
-    flex-grow: 1;
+.tag h4 {
+    width: fit-content;
+    padding: 3px;
+    background-color: #e3d8d8;
+    border: 1px solid #000;
 }
 
-.question-info-container {
-    background-color: #073c3c;
+.tag div {
+    margin: 12px 0;
 }
-
-* ***********************************************  */
