@@ -21,7 +21,7 @@ const Tags = () => {
   };
 
   return (
-    <div className="main tags-page">
+    <div className="main container tags-page">
       <Sidebar />
       <div className="tags-container">
         <div>

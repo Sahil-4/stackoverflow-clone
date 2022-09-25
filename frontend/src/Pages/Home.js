@@ -5,7 +5,7 @@ import Questions from "../Components/Questions";
 
 const Home = () => {
   return (
-    <div className="main">
+    <div className="main container">
       <Sidebar />
       <div className="home">
         <Questions />

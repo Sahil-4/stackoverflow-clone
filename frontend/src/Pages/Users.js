@@ -21,7 +21,7 @@ const Users = () => {
   };
 
   return (
-    <div className="main">
+    <div className="main container">
       <Sidebar />
       <div className="users-profile-container">
         <h1>All Users</h1>
