@@ -261,9 +261,10 @@
 
 .users-profile-container {
     height: 100%;
-    width: 75vw;
+    width: 1080px;
     display: flex;
     flex-wrap: wrap;
+    align-content: flex-start;
     margin: 0 6px;
     overflow: scroll;
 }
@@ -281,7 +282,7 @@
     margin: 13px;
 }
 
-.profile-card div img {
+.profile-image-container img {
     height: 120px;
     width: 120px;
     display: block;
@@ -356,4 +357,79 @@
 
 .login-form-container button {
     margin: 18px 0 0 0;
+}
+
+.user-profile-page {
+    font-size: 1.2rem;
+}
+
+.user-profile-container {
+    width: 1080px;
+    background-color: #c59797;
+}
+
+.user-profile {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.user-profile-name {
+    flex-grow: 1;
+    flex-basis: 1;
+}
+
+.user-profile-image-container img {
+    height: 150px;
+    width: 150px;
+}
+
+.edit-profile-btn {
+    padding: 3px;
+    margin: 5px;
+    border: 1px solid;
+}
+
+.user-profile-summary {
+    padding: 6px;
+}
+
+.user-profile-watched-tags-container span {
+    width: fit-content;
+    margin: 5px;
+    display: block;
+    border: 1px solid;
+    text-align: center;
+    padding: 3px;
+}
+
+.hidden {
+    display: none;
+}
+
+.summary-form-container {
+    padding: 8px;
+    border: 1px solid;
+}
+
+.summary-form-container form {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.summary-form-container span,
+.summary-form-container label {
+    display: block;
+}
+
+.summary-form-container input,
+.summary-form-container textarea {
+    width: 360px;
+    margin: 5px 0;
+}
+
+.summary-form-container input,
+.summary-form-container button {
+    height: 28px;
+    padding: 5px;
 }

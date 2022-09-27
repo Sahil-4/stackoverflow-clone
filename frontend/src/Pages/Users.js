@@ -11,7 +11,7 @@ const Users = () => {
           <img src={UserImage} alt="user" />
         </div>
         <div className="info">
-          <Link to="users/Alpha">
+          <Link to="/users/Alpha">
             <h4>Alpha</h4>
           </Link>
           <p>Python Lover</p>

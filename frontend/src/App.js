@@ -6,6 +6,7 @@ import Tags from "./Pages/Tags";
 import Users from "./Pages/Users";
 import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
+import UserProfile from "./Pages/UserProfile";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/questions" element={<Home />}></Route>
         <Route path="/tags" element={<Tags />}></Route>
         <Route path="/users" element={<Users />}></Route>
+        <Route path="/users/:uid" element={<UserProfile />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/signup" element={<Signup />}></Route>
       </Routes>
