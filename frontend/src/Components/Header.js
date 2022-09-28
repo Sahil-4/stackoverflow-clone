@@ -30,7 +30,7 @@ const Header = () => {
       </div>
 
       <Link to="/login">
-        <span className="login-button">Log In</span>
+        <span className="button">Log In</span>
       </Link>
     </header>
   );

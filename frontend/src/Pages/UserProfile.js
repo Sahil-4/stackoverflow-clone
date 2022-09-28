@@ -1,6 +1,7 @@
 import React from "react";
 import Sidebar from "../Components/Sidebar";
 import UserImage from "../assets/user.png";
+import { Link } from "react-router-dom";
 
 const UserProfile = () => {
   return (
@@ -17,7 +18,9 @@ const UserProfile = () => {
             <p>Joined on September 27, 2022</p>
           </div>
           <div>
-            <button className="edit-profile-btn">Edit Profile</button>
+            <Link to="/profile?edit">
+              <span className="button edit-profile-btn">Edit Profile</span>
+            </Link>
           </div>
         </div>
 

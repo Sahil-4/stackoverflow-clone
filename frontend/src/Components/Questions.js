@@ -1,6 +1,6 @@
 import React from "react";
 import Question from "./Question";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Questions = () => {
   const location = useLocation();
@@ -13,7 +13,9 @@ const Questions = () => {
         ) : (
           <h1>All Questions</h1>
         )}
-        <button>Ask Question</button>
+        <Link to="/post-question">
+          <span className="button">Ask Question</span>
+        </Link>
       </div>
 
       <h4>3 Questions</h4>

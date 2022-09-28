@@ -44,13 +44,13 @@
     padding: 0 32px;
 }
 
-.login-button {
+.button {
     display: block;
     padding: 5px;
     border: 1px solid #000;
 }
 
-.login-button:hover {}
+.button:hover {}
 
 .main {
     height: calc(100vh - 64px);
@@ -432,4 +432,36 @@
 .summary-form-container button {
     height: 28px;
     padding: 5px;
+}
+
+/* ************************ */
+
+.question-page>div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
+}
+
+.question-form-container {
+    background-color: #e3d8d8;
+    padding: 12px;
+    margin: 5px 0;
+    font-size: 0.7rem;
+}
+
+.question-form-container span {
+    display: block;
+    margin: 15px 5px;
+}
+
+.question-form-container span label {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.question-form-container input,
+.question-form-container textarea {
+    width: 480px;
 }
