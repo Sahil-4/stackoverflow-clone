@@ -65,6 +65,7 @@
 .sidebar-left {
     width: 210px;
     height: 100%;
+    padding: 5px;
     box-shadow: 1px 0px 0px 2px #e3d8d8;
 }
 
@@ -93,6 +94,7 @@
 }
 
 .home {
+    height: fit-content;
     width: 1080px;
     display: flex;
     margin: 0 6px;
@@ -108,6 +110,7 @@
 .hot-topics,
 .watched-tags {
     margin: 5px;
+    padding: 3px;
     border: 1px solid;
     box-shadow: 0px 0px 6px #5a4e4ec6;
 }
@@ -215,7 +218,7 @@
     flex-wrap: wrap;
 }
 
-.question-info .tags span {
+.tags span {
     margin: 3px;
     padding: 2px;
     border-radius: 5px;
@@ -227,8 +230,13 @@
 }
 
 .tags-page .tags-container {
+    width: 1080px;
     margin: 0 6px;
     overflow: scroll;
+}
+
+.tags-page .tags-container div {
+    margin: 0 13px;
 }
 
 .all-tags {
@@ -256,7 +264,7 @@
 }
 
 .tag div {
-    margin: 12px 0;
+    margin: 12px 0 !important;
 }
 
 .users-profile-container {
@@ -464,4 +472,82 @@
 .question-form-container input,
 .question-form-container textarea {
     width: 480px;
+}
+
+.view-question-main-container {
+    height: fit-content;
+    width: 1080px;
+    display: flex;
+    margin: 0 5px;
+    justify-content: space-between;
+}
+
+.view-question-container {
+    width: 70%;
+    height: 100%;
+    margin: 0 13px;
+}
+
+.question-body-wrapper {
+    padding-bottom: 25px;
+    border-bottom: 1px solid;
+}
+
+.question-body-wrapper h2 {
+    margin: 6px 0 12px 35px;
+}
+
+.question-body-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.question-votes span {
+    font-size: 1rem;
+    text-align: center;
+    display: block;
+    padding: 2px 6px;
+    margin: 2px;
+    cursor: pointer;
+    border: 1px solid;
+}
+
+.question-body {
+    margin: 2px 12px;
+}
+
+.question-body-author-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.question-body-button-container {
+    display: flex;
+    align-items: center;
+}
+
+.question-body-button-container button {
+    height: 24px;
+    margin: 0 3px;
+}
+
+.question-body-author-container span {
+    margin: 0 5px 0 0;
+}
+
+.answer-wrapper {
+    margin: 3px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid;
+}
+
+.answer-form-container {
+    padding: 3px;
+}
+
+.answer-form-container button {
+    display: block;
 }
