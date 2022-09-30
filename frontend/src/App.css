@@ -94,7 +94,6 @@
 }
 
 .home {
-    height: fit-content;
     width: 1080px;
     display: flex;
     margin: 0 6px;
@@ -161,6 +160,7 @@
 .questions {
     width: 70%;
     height: 100%;
+    overflow: scroll;
     margin: 0 13px;
 }
 
@@ -241,7 +241,6 @@
 
 .all-tags {
     height: fit-content;
-    width: 75vw;
     display: flex;
     flex-wrap: wrap;
 }
@@ -475,7 +474,6 @@
 }
 
 .view-question-main-container {
-    height: fit-content;
     width: 1080px;
     display: flex;
     margin: 0 5px;
@@ -485,6 +483,7 @@
 .view-question-container {
     width: 70%;
     height: 100%;
+    overflow: scroll;
     margin: 0 13px;
 }
 
