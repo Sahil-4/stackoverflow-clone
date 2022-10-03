@@ -1,7 +1,7 @@
 {
   "name": "stackoverflow-clone-backend",
-  "version": "0.1.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "Backend for stackoverflow clone",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,12 +12,14 @@
   "author": "Sahil-4",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^8.5.1",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
-    "mongoose": "^6.0.12",
     "express": "^4.17.1",
+    "express-validator": "^6.14.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.0.12",
     "nodemon": "^2.0.14"
   }
 }
