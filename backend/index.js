@@ -8,7 +8,11 @@ const app = express();
 require("./db")();
 
 // configuration
-app.use(require("cors")());
+app.use(
+  require("cors")({
+    origin: "http://localhost:3000",
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

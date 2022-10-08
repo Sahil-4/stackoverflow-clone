@@ -8,7 +8,7 @@ exports.signup = async (req, res) => {
     // checking if user already exists
     const isUserExist = await User.findOne({ email: req.body.email });
     if (isUserExist) {
-      return res.status(400).json({ error: "User already exists." });
+      return res.status(400).send({ error: "User already exists." });
     }
 
     // hashing password
@@ -28,14 +28,24 @@ exports.signup = async (req, res) => {
         id: user.id,
       },
     };
-    const authToken = jwt.sign(data, process.env.JWT_SECRET);
+    const authtoken = jwt.sign(data, process.env.JWT_SECRET);
 
-    // sending jwt
-    console.log(`New user registered with authtoken : ${authToken}`);
-    return res.json({ authToken });
+    // sending user profile
+    const userProfile = {
+      authtoken: authtoken,
+      uid: user._id,
+      avatar: user.avatar,
+      username: user.username,
+      email: user.email,
+      watched_tags: user.watched_tags,
+      about: user.about,
+      timestamp: user.timestamp,
+    };
+
+    return res.json({ userProfile });
   } catch (err) {
     console.log(err);
-    return res.send({ error: "some unknown error occured" });
+    res.status(500).send({ error: "some error occurred" });
   }
 };
 
@@ -44,7 +54,7 @@ exports.login = async (req, res) => {
     // checking if user exists or not
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
-      return res.status(400).json({ error: "User not found" });
+      return res.status(404).json({ error: "User not found" });
     }
 
     // checking for wrong password
@@ -53,9 +63,7 @@ exports.login = async (req, res) => {
       user.password
     );
     if (!passwordCompare) {
-      return res
-        .status(400)
-        .json({ error: "Looks like you may have entered wrong credentials." });
+      return res.status(401).send({ error: "un-authorised user" });
     }
 
     // signing jwt
@@ -65,13 +73,24 @@ exports.login = async (req, res) => {
       },
     };
 
-    // sending jwt
-    const authToken = jwt.sign(data, process.env.JWT_SECRET);
-    console.log(`${req.body.email} logged in with authToken : ${authToken}`);
-    return res.json({ authToken });
+    const authtoken = jwt.sign(data, process.env.JWT_SECRET);
+
+    // sending user profile
+    const userProfile = {
+      authtoken: authtoken,
+      uid: user._id,
+      avatar: user.avatar,
+      username: user.username,
+      email: user.email,
+      watched_tags: user.watched_tags,
+      about: user.about,
+      timestamp: user.timestamp,
+    };
+
+    return res.json({ userProfile });
   } catch (err) {
     console.log(err);
-    return res.send({ error: "some unknown error occured" });
+    res.status(500).send({ error: "some error occurred" });
   }
 };
 
@@ -81,7 +100,7 @@ exports.getusers = async (req, res) => {
     return res.json(users);
   } catch (err) {
     console.log(err);
-    return res.send({ error: "some unknown error occured" });
+    res.status(500).send({ error: "some error occurred" });
   }
 };
 
@@ -89,13 +108,13 @@ exports.getuser = async (req, res) => {
   try {
     const user = await User.findById(req.params.uid).select("-password");
     if (!user) {
-      return res.send({ error: "no user found" });
+      return res.status(404).send({ error: "no user found" });
     }
 
     return res.send(user);
   } catch (err) {
     console.log(err);
-    return res.send({ error: "some unknown error occured" });
+    res.status(500).send({ error: "some error occurred" });
   }
 };
 
@@ -104,7 +123,7 @@ exports.updateuser = async (req, res) => {
     // checking if user exists
     const user = await User.findById(req.params.uid);
     if (!user) {
-      return res.send({ error: "user not found" });
+      return res.status(404).send({ error: "no user found" });
     }
 
     // checking for wrong password
@@ -113,17 +132,39 @@ exports.updateuser = async (req, res) => {
       user.password
     );
     if (!passwordCompare) {
-      return res.send({ error: "credentials not matched." });
+      return res.status(401).send({ error: "un-authorised user" });
     }
 
     // updating user data except password
     const user_new = req.body;
     delete user_new.password;
     await user.updateOne(user_new);
-    return res.send({ message: "user updated" });
+
+    // signing jwt
+    const data = {
+      user: {
+        id: user.id,
+      },
+    };
+
+    const authtoken = jwt.sign(data, process.env.JWT_SECRET);
+
+    // sending user profile
+    const userProfile = {
+      authtoken: authtoken,
+      uid: user._id,
+      avatar: user_new.avatar || user.avatar,
+      username: user_new.username || user.username,
+      email: user_new.email || user.email,
+      watched_tags: user_new.watched_tags || user.watched_tags,
+      about: user_new.about || user.about,
+      timestamp: user.timestamp || user.timestamp,
+    };
+
+    return res.json({ userProfile });
   } catch (err) {
     console.log(err);
-    return res.send({ error: "some unknown error occured" });
+    res.status(500).send({ error: "some error occurred" });
   }
 };
 
@@ -131,7 +172,7 @@ exports.deleteuser = async (req, res) => {
   try {
     const user = await User.findById(req.params.uid);
     if (!user) {
-      return res.send({ error: "user not found" });
+      return res.status(404).send({ error: "no user found" });
     }
 
     // checking for wrong password
@@ -140,14 +181,13 @@ exports.deleteuser = async (req, res) => {
       user.password
     );
     if (!passwordCompare) {
-      return res.send({ error: "credentials not matched." });
+      return res.status(401).send({ error: "un-authorised user" });
     }
 
-    // TODO : delete user
     await user.delete();
     return res.send({ message: "user deleted" });
   } catch (err) {
     console.log(err);
-    return res.send({ error: "some unknown error occured" });
+    res.status(500).send({ error: "some error occurred" });
   }
 };

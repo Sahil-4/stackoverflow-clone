@@ -83,14 +83,15 @@ const Rightsidebar = () => {
             <li>
               <Link to="/">
                 <span>
-                  Question does not make sense anymore since software update.
+                  209 Question does not make sense anymore since software
+                  update.
                 </span>
               </Link>
             </li>
             <li>
               <Link to="/">
                 <span>
-                  How to handle suggested edits about hyperlink formatting?
+                  530 How to handle suggested edits about hyperlink formatting?
                 </span>
               </Link>
             </li>
@@ -102,8 +103,8 @@ const Rightsidebar = () => {
         <h4>Watched tags</h4>
         <div className="tags-container">
           {tags.map((tag, index) => (
-            <Link to={`/questions/tag==${tag}`}>
-              <span key={index}>{tag}</span>
+            <Link key={index} to={`/questions/tag=${tag}`}>
+              <span>{tag}</span>
             </Link>
           ))}
         </div>

@@ -1,7 +1,27 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { signup } from "../redux/slice/auth";
 
 const Signup = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.userProfile);
+
+  const [auth, setAuth] = useState({ username: "", email: "", password: "" });
+
+  const handleOnChange = (e) => {
+    setAuth({ ...auth, [e.target.name]: e.target.value });
+  };
+
+  useEffect(() => {
+    if (user?.authtoken) {
+      localStorage.setItem("userProfile", JSON.stringify(user));
+      navigate("/");
+    }
+    return () => {};
+  }, [navigate, user]);
+
   return (
     <div className="main signup-page">
       <div className="signup-div-l">
@@ -21,18 +41,44 @@ const Signup = () => {
       </div>
 
       <div className="form-container">
-        <form action="/">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            dispatch(signup(auth));
+          }}
+        >
           <span>
             <label htmlFor="username">Display Name</label>
-            <input type="text" id="username" name="username" />
+            <input
+              type="text"
+              id="username"
+              name="username"
+              onChange={(e) => {
+                handleOnChange(e);
+              }}
+            />
           </span>
           <span>
             <label htmlFor="email">Email</label>
-            <input type="email" id="email" name="email" />
+            <input
+              type="email"
+              id="email"
+              name="email"
+              onChange={(e) => {
+                handleOnChange(e);
+              }}
+            />
           </span>
           <span>
             <label htmlFor="password">Password</label>
-            <input type="password" id="password" name="password" />
+            <input
+              type="password"
+              id="password"
+              name="password"
+              onChange={(e) => {
+                handleOnChange(e);
+              }}
+            />
           </span>
           <p>
             Passwords must contain at least eight characters, including at least

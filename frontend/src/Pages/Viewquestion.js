@@ -1,49 +1,105 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import Rightsidebar from "../Components/Rightsidebar";
 import Sidebar from "../Components/Sidebar";
+import { deleteAnswer, postAnswer } from "../redux/slice/questions";
+import {
+  deleteQuestion,
+  fetchAllQuestions,
+  voteQuestion,
+} from "../redux/slice/questions";
 
 const Question = () => {
-  const tags = ["Java", "Programming", "Array"];
+  const params = useParams();
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+  const question_list = useSelector((state) => state.questions.question_list);
+  const question_current = useSelector(
+    (state) => state.questions.question_current
+  );
+  const userProfile = useSelector((state) => state.auth.userProfile);
+
+  const [question, setQuestion] = useState({});
+
+  useEffect(() => {
+    if (!question_list) {
+      dispatch(fetchAllQuestions());
+    }
+    return () => {};
+  }, [dispatch, question_list]);
+
+  useEffect(() => {
+    question_list?.forEach((element) => {
+      if (element._id === params.uid) {
+        setQuestion(element);
+      }
+    });
+  }, [params.uid, question_list]);
+
+  const [answer, setAnswer] = useState("");
+
+  useEffect(() => {
+    if (question_current) {
+      setQuestion(question_current);
+    }
+    return () => {};
+  }, [question_current]);
 
   const Questionbody = () => {
     return (
       <div className="question-body-wrapper">
-        <h2>What is programming?</h2>
+        <h2>{question.question_title}</h2>
         <div className="question-body-container">
           <div className="question-votes">
-            <span>+</span>
-            <span>0</span>
-            <span>-</span>
+            <span
+              onClick={() => {
+                dispatch(voteQuestion(question._id));
+              }}
+            >
+              +
+            </span>
+            <span>{question.question_total_votes?.length}</span>
+            <span
+              onClick={() => {
+                dispatch(voteQuestion(question._id));
+              }}
+            >
+              -
+            </span>
           </div>
           <div className="question-body">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut
-              cupiditate voluptas culpa consequuntur obcaecati nihil quas est
-              similique laborum corrupti. Deleniti accusamus odio soluta
-              explicabo reiciendis voluptatibus ut possimus quaerat! Lorems
-              culpa consequuntur obcaecati nihil quas est similique laborum
-              corrupti. Deleniti accusamus odio soluta explicabo reiciendis
-              voluptatibus ut possimus quaerat!
-            </p>
+            <p>{question.question_body}</p>
             <div className="tags">
-              {tags.map((tag, index) => (
-                <Link to={`/questions/tag==${tag}`}>
-                  <span key={index}>{tag}</span>
+              {question.question_tags?.map((tag, index) => (
+                <Link key={index} to={`/questions/tag=${tag}`}>
+                  <span>{tag}</span>
                 </Link>
               ))}
             </div>
             <div className="question-body-author-container">
               <div className="question-body-button-container">
                 <button className="button">Share</button>
-                <button className="button">Delete</button>
+                {userProfile?.uid === question.question_author?.id && (
+                  <button
+                    className="button"
+                    onClick={() => {
+                      dispatch(deleteQuestion(question._id));
+                      navigate("/");
+                    }}
+                  >
+                    Delete
+                  </button>
+                )}
               </div>
               <div>
-                <p>Asked 22 Hours ago</p>
+                <p>{moment(question.timestamp).fromNow()}</p>
                 <div>
                   <span>A</span>
                   <span>
-                    <Link to="users/Alpha"> Alpha</Link>
+                    <Link to="/users/"> {question.question_author?.name}</Link>
                   </span>
                 </div>
               </div>
@@ -54,28 +110,32 @@ const Question = () => {
     );
   };
 
-  const Answerbody = () => {
+  const Answerbody = (props) => {
     return (
       <div className="answer-wrapper">
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores
-          similique cumque eveniet, suscipit optio dolorum, facere natus porro
-          quis sapiente rem repudiandae eius aliquid, doloribus necessitatibus.
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores
-          similique cumque eveniet, suscipit optio dolorum, facere natus porro
-          quis sapiente rem repudiandae eius aliquid, doloribus necessitatibus.
-          Aperiam molestiae optio exercitationem!
-        </p>
+        <p>{props.answer.answer_body}</p>
         <div className="question-body-author-container">
-          <div>
+          <div className="question-body-button-container">
             <button className="button">Share</button>
+            {userProfile?.uid === props.answer.answer_author?.uid && (
+              <button
+                className="button"
+                onClick={() => {
+                  dispatch(
+                    deleteAnswer({ quid: question._id, auid: props.answer._id })
+                  );
+                }}
+              >
+                Delete
+              </button>
+            )}
           </div>
           <div>
-            <p>Answered 12 Minutes ago</p>
+            <p>{moment(props.answer.timestamp).fromNow()}</p>
             <p>
               <span>A</span>
               <span>
-                <Link to="users/Alpha"> Alpha</Link>
+                <Link to="users/Alpha"> {props.answer.answer_author.name}</Link>
               </span>
             </p>
           </div>
@@ -91,33 +151,56 @@ const Question = () => {
         <div className="view-question-container">
           <Questionbody />
           <div className="answers-container">
-            <h3>5 Answers</h3>
+            <h3>{question.question_total_answers?.length} Answers</h3>
             <div className="all-answers">
-              <Answerbody />
-              <Answerbody />
-              <Answerbody />
-              <Answerbody />
-              <Answerbody />
+              {question.question_total_answers?.map((answer) => {
+                return <Answerbody key={answer._id} answer={answer} />;
+              })}
             </div>
           </div>
 
           <div className="answer-form-container">
             <h3>Your answer</h3>
-            <form action="/">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                dispatch(
+                  postAnswer({
+                    answer: {
+                      answer_body: answer,
+                      answer_author: {
+                        uid: JSON.parse(localStorage.getItem("userProfile"))
+                          .uid,
+                        name: JSON.parse(localStorage.getItem("userProfile"))
+                          .username,
+                      },
+                    },
+                    quid: params.uid,
+                  })
+                );
+                setAnswer("");
+              }}
+            >
               <textarea
                 name="newanswer"
                 id="newanswer"
                 cols="60"
                 rows="10"
+                value={answer}
+                onChange={(e) => {
+                  setAnswer(e.target.value);
+                }}
               ></textarea>
-              <button className="button">Post Your Answer</button>
+              <button type="submit" className="button">
+                Post Your Answer
+              </button>
             </form>
 
             <p className="tags">
               Browse other questions tagged
-              {tags.map((tag, index) => (
-                <Link to={`/questions/tag==${tag}`}>
-                  <span key={index}>{tag}</span>
+              {question.question_tags?.map((tag, index) => (
+                <Link key={index} to={`/questions/tag==${tag}`}>
+                  <span>{tag}</span>
                 </Link>
               ))}
               or <Link to="/post-question">ask your own question.</Link>

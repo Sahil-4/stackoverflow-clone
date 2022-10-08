@@ -43,7 +43,7 @@ router.post(
 );
 
 // Route 2 : Login using email and password
-router.get(
+router.post(
   "/login",
   [
     check("email")
@@ -65,7 +65,7 @@ router.get(
     const error = validationResult(req).formatWith(({ msg }) => msg);
 
     if (!error.isEmpty()) {
-      res.status(422).json({ error: error.array() });
+      res.status(422).json({ error: "wrong credentials." });
     } else {
       next();
     }

@@ -1,40 +1,43 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import moment from "moment";
 
-const Question = () => {
-  const tags = ["Java", "Programming", "Array"];
-
+const Question = (props) => {
   return (
     <div className="question">
       <div className="question-reach">
         <span>
-          0 <br /> Votes
+          {props.question.question_total_votes.length} <br /> Votes
         </span>
         <span>
-          0 <br /> Answers
+          {props.question.question_total_answers.length} <br /> Answers
         </span>
       </div>
 
       <div className="question-info-container">
         <div className="question-title-container">
-          <Link to="/question/view:r14d0m">
-            <p className="question-title">What is programming ?</p>
+          <Link to={`/question/view/${props.question._id}`}>
+            <p className="question-title">{props.question.question_title}</p>
           </Link>
         </div>
 
         <div className="question-info">
           <div className="tags">
-            {tags.map((tag, index) => (
-              <Link to={`/questions/tag==${tag}`}>
-                <span key={index}>{tag}</span>
+            {props.question.question_tags.map((tag, index) => (
+              <Link key={index} to={`/questions/tag=${tag}`}>
+                <span>{tag}</span>
               </Link>
             ))}
           </div>
 
           <div className="info">
-            <span>asked 12 Minutes ago</span>
+            <span>{moment(props.question?.timestamp).fromNow()}</span>
             <span>
-              by : <Link to="users/Alpha"> Alpha</Link>
+              by :{" "}
+              <Link to={`users/${props.question.question_author.id}`}>
+                {" "}
+                {props.question.question_author.name}
+              </Link>
             </span>
           </div>
         </div>

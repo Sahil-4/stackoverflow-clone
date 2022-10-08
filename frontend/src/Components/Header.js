@@ -1,9 +1,14 @@
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import Logo from "../assets/logo.png";
 import Search from "../assets/search-solid.svg";
+import { Logout } from "../redux/slice/auth";
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const userProfile = useSelector((state) => state.auth.userProfile);
+
   return (
     <header className="header-top">
       <div className="logo-container">
@@ -29,9 +34,28 @@ const Header = () => {
         <input type="text" placeholder="Search" />
       </div>
 
-      <Link to="/login">
-        <span className="button">Log In</span>
-      </Link>
+      <div className="profile-preview-container">
+        {userProfile?.username ? (
+          <>
+            <Link to={"/users/me"}>
+              <span className="button profile-preview">
+                {userProfile?.username[0]}
+              </span>
+            </Link>
+            <Link
+              onClick={() => {
+                dispatch(Logout());
+              }}
+            >
+              <span className="button">Log out</span>
+            </Link>
+          </>
+        ) : (
+          <Link to="/login">
+            <span className="button">Log in</span>
+          </Link>
+        )}
+      </div>
     </header>
   );
 };

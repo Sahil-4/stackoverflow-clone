@@ -52,6 +52,25 @@
 
 .button:hover {}
 
+.profile-preview-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-preview-container .profile-preview {
+    height: 28px;
+    width: 28px;
+    border-radius: 18px;
+    padding: 3px;
+    margin: 3px;
+    font-size: 1.1rem;
+    text-align: center;
+    display: block;
+    color: #c59797;
+    background-color: #391349;
+}
+
 .main {
     height: calc(100vh - 64px);
     margin-top: 64px;
@@ -235,7 +254,7 @@
     overflow: scroll;
 }
 
-.tags-page .tags-container div {
+.tags-page .tags-container>div {
     margin: 0 13px;
 }
 
@@ -371,6 +390,8 @@
 }
 
 .user-profile-container {
+    height: 100%;
+    overflow: scroll;
     width: 1080px;
     background-color: #c59797;
 }
@@ -513,6 +534,7 @@
 }
 
 .question-body {
+    width: 100%;
     margin: 2px 12px;
 }
 

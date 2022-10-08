@@ -8,11 +8,11 @@ const verify_user = (req, res, next) => {
     if (req.params.uid === data.user.id) {
       next();
     } else {
-      return res.send({ error: "un-authorised user" });
+      return res.status(401).send({ error: "un-authorised user" });
     }
   } catch (err) {
     console.log(err);
-    return res.send({ error: "un-authorised user" });
+    return res.status(401).send({ error: "un-authorised user" });
   }
 };
 
