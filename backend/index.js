@@ -10,7 +10,7 @@ require("./db")();
 // configuration
 app.use(
   require("cors")({
-    origin: "http://localhost:3000",
+    origin: process.env.ORIGIN,
   })
 );
 app.use(express.json());
@@ -29,5 +29,5 @@ app.use("/api/question", require("./Routes/question"));
 
 // starting server
 app.listen(process.env.PORT, (err) => {
-  console.log(`Server is running on http://localhost:${process.env.PORT}`);
+  console.log(`Server is running on port:${process.env.PORT}`);
 });

@@ -1,6 +1,5 @@
 const express = require("express");
 const question = require("../Controllers/question");
-const verify_login = require("../Middleware/verify_login");
 const verify_author = require("../Middleware/verify_author");
 const { check, validationResult } = require("express-validator");
 
