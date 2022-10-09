@@ -1,14 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+const BASE_URL = "https://stackoverflow-clone-api-sahil-4.onrender.com";
+
 export const fetchAllQuestions = createAsyncThunk(
   "fetchAllQuestions",
   async () => {
-    const response = await fetch(
-      "http://localhost:5000/api/question/questions",
-      {
-        method: "get",
-      }
-    );
+    const response = await fetch(`${BASE_URL}/api/question/questions`, {
+      method: "get",
+    });
 
     const data = await response.json();
 
@@ -23,7 +22,7 @@ export const fetchAllQuestions = createAsyncThunk(
 export const postNewQuestions = createAsyncThunk(
   "postNewQuestions",
   async (question_body) => {
-    const response = await fetch("http://localhost:5000/api/question/ask", {
+    const response = await fetch(`${BASE_URL}/api/question/ask`, {
       method: "post",
       headers: {
         "Content-type": "application/json",
@@ -45,16 +44,13 @@ export const postNewQuestions = createAsyncThunk(
 export const deleteQuestion = createAsyncThunk(
   "deleteQuestion",
   async (quid) => {
-    const response = await fetch(
-      `http://localhost:5000/api/question//delete/${quid}`,
-      {
-        method: "delete",
-        headers: {
-          "Content-type": "application/json",
-          authtoken: JSON.parse(localStorage.getItem("userProfile")).authtoken,
-        },
-      }
-    );
+    const response = await fetch(`${BASE_URL}/api/question//delete/${quid}`, {
+      method: "delete",
+      headers: {
+        "Content-type": "application/json",
+        authtoken: JSON.parse(localStorage.getItem("userProfile")).authtoken,
+      },
+    });
 
     const data = await response.json();
     if (response.status === 200) {
@@ -66,16 +62,13 @@ export const deleteQuestion = createAsyncThunk(
 );
 
 export const voteQuestion = createAsyncThunk("voteQuestion", async (quid) => {
-  const response = await fetch(
-    `http://localhost:5000/api/question/vote/${quid}`,
-    {
-      method: "PATCH",
-      headers: {
-        "Content-type": "application/json",
-        authtoken: JSON.parse(localStorage.getItem("userProfile")).authtoken,
-      },
-    }
-  );
+  const response = await fetch(`${BASE_URL}/api/question/vote/${quid}`, {
+    method: "PATCH",
+    headers: {
+      "Content-type": "application/json",
+      authtoken: JSON.parse(localStorage.getItem("userProfile")).authtoken,
+    },
+  });
 
   const data = await response.json();
 
@@ -90,7 +83,7 @@ export const postAnswer = createAsyncThunk(
   "postAnswer",
   async (answer_data) => {
     const response = await fetch(
-      `http://localhost:5000/api/question/answer/${answer_data.quid}`,
+      `${BASE_URL}/api/question/answer/${answer_data.quid}`,
       {
         method: "put",
         headers: {
@@ -112,7 +105,7 @@ export const postAnswer = createAsyncThunk(
 
 export const deleteAnswer = createAsyncThunk("deleteAnswer", async (answer) => {
   const response = await fetch(
-    `http://localhost:5000/api/question/delete/${answer.quid}/${answer.auid}`,
+    `${BASE_URL}/api/question/delete/${answer.quid}/${answer.auid}`,
     {
       method: "PATCH",
       headers: {
@@ -162,7 +155,6 @@ const questionsSlice = createSlice({
       const ls = state.question_list;
       state.isLoading = false;
       state.question_list = [...ls, action.payload];
-      console.log(action.payload);
     });
 
     builder.addCase(postNewQuestions.rejected, (state, action) => {
@@ -182,7 +174,6 @@ const questionsSlice = createSlice({
       });
       state.isLoading = false;
       state.question_list = ls;
-      console.log(ls);
     });
 
     builder.addCase(deleteQuestion.rejected, (state, action) => {

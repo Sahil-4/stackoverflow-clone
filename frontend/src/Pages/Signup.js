@@ -91,7 +91,9 @@ const Signup = () => {
               invitations, company announcements, and digests.
             </span>
           </div>
-          <button type="submit">Sign Up</button>
+          <button type="submit" className="button">
+            Sign Up
+          </button>
           <p>
             By clicking “Sign up”, you agree to our terms of service, privacy
             policy and cookie policy

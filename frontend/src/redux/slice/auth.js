@@ -1,11 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+const BASE_URL = "https://stackoverflow-clone-api-sahil-4.onrender.com";
+
 export const signup = createAsyncThunk("signup", async (auth_data) => {
   if (localStorage.getItem("userProfile")) {
     return { userProfile: JSON.parse(localStorage.getItem("userProfile")) };
   }
 
-  const response = await fetch("http://localhost:5000/api/user/signup", {
+  const response = await fetch(`${BASE_URL}/api/user/signup`, {
     method: "post",
     headers: {
       "Content-type": "application/json",
@@ -28,7 +30,7 @@ export const login = createAsyncThunk("login", async (auth_data) => {
     return { userProfile: JSON.parse(localStorage.getItem("userProfile")) };
   }
 
-  const response = await fetch("http://localhost:5000/api/user/login", {
+  const response = await fetch(`${BASE_URL}/api/user/login`, {
     method: "post",
     headers: {
       "Content-type": "application/json",
@@ -56,7 +58,7 @@ export const updateUserProfile = createAsyncThunk(
   "updateUserProfile",
   async (user_data) => {
     const response = await fetch(
-      `http://localhost:5000/api/user/updateuser/${
+      `${BASE_URL}/api/user/updateuser/${
         JSON.parse(localStorage.getItem("userProfile")).uid
       }`,
       {
@@ -71,7 +73,7 @@ export const updateUserProfile = createAsyncThunk(
 
     const data = await response.json();
     if (response.status === 200) {
-      return data; // user
+      return data;
     }
 
     return data.error;

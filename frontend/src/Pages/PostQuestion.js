@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { postNewQuestions } from "../redux/slice/questions";
@@ -13,8 +13,8 @@ const PostQuestion = () => {
     question_body: "",
     question_tags: [],
     question_author: {
-      name: userProfile.username,
-      id: userProfile.uid,
+      name: userProfile?.username,
+      id: userProfile?.uid,
     },
   });
 
@@ -26,6 +26,13 @@ const PostQuestion = () => {
       alert("please enter question title and body");
     }
   };
+
+  useEffect(() => {
+    if (!userProfile) {
+      navigate("/login");
+    }
+    return () => {};
+  }, []);
 
   return (
     <div className="main question-page">

@@ -1,7 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+const BASE_URL = "https://stackoverflow-clone-api-sahil-4.onrender.com";
+
 export const getAllUsers = createAsyncThunk("getAllUsers", async () => {
-  const response = await fetch(`http://localhost:5000/api/user/getusers`, {
+  const response = await fetch(`${BASE_URL}/api/user/getusers`, {
     method: "get",
     headers: {
       authtoken: JSON.parse(localStorage.getItem("userProfile")).authtoken,

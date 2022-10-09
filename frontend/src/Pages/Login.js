@@ -62,7 +62,9 @@ const Login = () => {
               }}
             />
           </span>
-          <button type="submit">Login</button>
+          <button type="submit" className="button">
+            Login
+          </button>
         </form>
         <p>
           Dont have an account? &nbsp;
