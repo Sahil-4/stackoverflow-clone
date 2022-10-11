@@ -1,4 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { auth } from "../../firebase/firebase_config";
 
 const BASE_URL = "https://stackoverflow-clone-api-sahil-4.onrender.com";
 
@@ -80,6 +82,51 @@ export const updateUserProfile = createAsyncThunk(
   }
 );
 
+export const getOTP = createAsyncThunk("getOTP", async (data) => {
+  // set up reCaptcha
+  const recaptchaVerifier = new RecaptchaVerifier(
+    "recaptcha-container",
+    {
+      size: "normal",
+      callback: (response) => {
+        data.setFlag(true);
+      },
+    },
+    auth
+  );
+  recaptchaVerifier.render();
+
+  // send otp
+  const response = await signInWithPhoneNumber(
+    auth,
+    data.phone,
+    recaptchaVerifier
+  );
+  data.setConfirmationResult(response);
+});
+
+export const loginPhone = createAsyncThunk("loginPhone", async (auth_data) => {
+  try {
+    await auth_data.confirmationResult.confirm(auth_data.otp);
+    const response = await fetch(`${BASE_URL}/api/user/phonelogin`, {
+      method: "post",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ phone: auth_data.phone }),
+    });
+
+    const data = response.json();
+    if (response.status === 200) {
+      return data;
+    }
+
+    return data.error;
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -139,6 +186,38 @@ const authSlice = createSlice({
     });
 
     builder.addCase(updateUserProfile.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = true;
+      console.log(action.payload);
+    });
+
+    // sending otp
+    builder.addCase(getOTP.pending, (state, action) => {
+      state.isLoading = true;
+    });
+
+    builder.addCase(getOTP.fulfilled, (state, action) => {
+      state.isLoading = false;
+      console.log(action.payload);
+    });
+
+    builder.addCase(getOTP.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = true;
+      console.log(action.payload);
+    });
+
+    // login using phone and otp
+    builder.addCase(loginPhone.pending, (state, action) => {
+      state.isLoading = true;
+    });
+
+    builder.addCase(loginPhone.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.userProfile = action.payload.userProfile;
+    });
+
+    builder.addCase(loginPhone.rejected, (state, action) => {
       state.isLoading = false;
       state.error = true;
       console.log(action.payload);

@@ -9,6 +9,7 @@ import Users from "./Pages/Users";
 import UserProfile from "./Pages/UserProfile";
 import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
+import PhoneLogin from "./Pages/PhoneLogin";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/users/:uid" element={<UserProfile />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/signup" element={<Signup />}></Route>
+        <Route path="/login-with-phone" element={<PhoneLogin />}></Route>
       </Routes>
     </Router>
   );

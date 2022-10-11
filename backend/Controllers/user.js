@@ -94,6 +94,48 @@ exports.login = async (req, res) => {
   }
 };
 
+exports.phonelogin = async (req, res) => {
+  try {
+    // find user by phone
+    let user = await User.findOne({ email: req.body.phone });
+
+    // if user not exists create new profile
+    if (!user) {
+      // creating new user
+      user = await User.create({
+        username: req.body.phone,
+        email: req.body.phone,
+        password: req.body.phone,
+      });
+    }
+
+    // if user exists send userprofile
+    // signing jwt
+    const data = {
+      user: {
+        id: user.id,
+      },
+    };
+    const authtoken = jwt.sign(data, process.env.JWT_SECRET);
+
+    const userProfile = {
+      authtoken: authtoken,
+      uid: user._id,
+      avatar: user.avatar,
+      username: user.username,
+      email: user.email,
+      watched_tags: user.watched_tags,
+      about: user.about,
+      timestamp: Date.now(),
+    };
+
+    return res.json({ userProfile });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ error: "some error occurred" });
+  }
+};
+
 exports.getusers = async (req, res) => {
   try {
     const users = await User.find({}).select("-password");

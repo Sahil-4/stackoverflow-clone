@@ -70,6 +70,11 @@ const Login = () => {
           Dont have an account? &nbsp;
           <Link to="/signup">Sign up</Link>
         </p>
+        <div>
+          <Link to="/login-with-phone">
+            <span className="button">Login with Phone</span>
+          </Link>
+        </div>
       </div>
     </div>
   );
