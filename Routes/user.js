@@ -85,4 +85,7 @@ router.put("/updateuser/:uid", verify_user, user.updateuser);
 // Route 6 : delete user using uid
 router.delete("/deleteuser/:uid", verify_user, user.deleteuser);
 
+// Route 7 : login using phone and otp
+router.post("/phonelogin", user.phonelogin);
+
 module.exports = router;
