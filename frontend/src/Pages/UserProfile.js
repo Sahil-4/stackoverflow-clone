@@ -50,6 +50,36 @@ const UserProfile = () => {
     return () => {};
   }, [navigate, params.uid, userProfile, users]);
 
+  // get user location
+  const [myLocation, setMyLocation] = useState("");
+
+  useEffect(() => {
+    return () => {
+      window.navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const response = await fetch(
+            `https://api.opencagedata.com/geocode/v1/json?q=${position.coords.latitude}+${position.coords.longitude}&key=46a8fa9117d14f56afc13ce3f0272b75`,
+            {
+              method: "get",
+            }
+          );
+
+          const data = await response.json();
+          setMyLocation(
+            `${data.results[0].components.city}, ${data.results[0].components.state}, ${data.results[0].components.country}`
+          );
+        },
+
+        (err) => {
+          console.log(err);
+          // if user deneid geo location
+          // get location using ip address
+        },
+        { timeout: 60000, enableHighAccuracy: true }
+      );
+    };
+  }, []);
+
   return (
     <div className="main container user-profile-page">
       <Sidebar />
@@ -62,6 +92,7 @@ const UserProfile = () => {
           <div className="user-profile-name">
             <h3>{profile.username}</h3>
             <p>{moment(profile.timestamp).fromNow()}</p>
+            <p>{myLocation}</p>;
           </div>
           <div>
             {(params.uid === "me" || params.uid === userProfile?.uid) && (
