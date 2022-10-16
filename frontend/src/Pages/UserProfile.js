@@ -54,30 +54,31 @@ const UserProfile = () => {
   const [myLocation, setMyLocation] = useState("");
 
   useEffect(() => {
-    return () => {
-      window.navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const response = await fetch(
-            `https://api.opencagedata.com/geocode/v1/json?q=${position.coords.latitude}+${position.coords.longitude}&key=46a8fa9117d14f56afc13ce3f0272b75`,
-            {
-              method: "get",
-            }
-          );
+    window.navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const response = await fetch(
+          // change api key ----------------------------------------------------------------------------------
+          `https://api.opencagedata.com/geocode/v1/json?q=${position.coords.latitude}+${position.coords.longitude}&key=<KEY>`,
+          // change api key ----------------------------------------------------------------------------------
+          {
+            method: "get",
+          }
+        );
 
-          const data = await response.json();
-          setMyLocation(
-            `${data.results[0].components.city}, ${data.results[0].components.state}, ${data.results[0].components.country}`
-          );
-        },
+        const data = await response.json();
+        setMyLocation(
+          `${data.results[0]?.components.city || ""} ${
+            data.results[0]?.components.state || ""
+          } ${data.results[0]?.components.country || ""}`
+        );
+      },
 
-        (err) => {
-          console.log(err);
-          // if user deneid geo location
-          // get location using ip address
-        },
-        { timeout: 60000, enableHighAccuracy: true }
-      );
-    };
+      (err) => {
+        console.log(err);
+      },
+      { timeout: 60000, enableHighAccuracy: true }
+    );
+    return () => {};
   }, []);
 
   return (
@@ -92,7 +93,7 @@ const UserProfile = () => {
           <div className="user-profile-name">
             <h3>{profile.username}</h3>
             <p>{moment(profile.timestamp).fromNow()}</p>
-            <p>{myLocation}</p>;
+            <p>{myLocation}</p>
           </div>
           <div>
             {(params.uid === "me" || params.uid === userProfile?.uid) && (

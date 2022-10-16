@@ -27,6 +27,9 @@ app.use("/api/user", require("./Routes/user"));
 // questions and answer related routes
 app.use("/api/question", require("./Routes/question"));
 
+// handle chatbot questions
+app.use("/api/chatbot", require("./Routes/chatbot"));
+
 // starting server
 app.listen(process.env.PORT, (err) => {
   console.log(`Server is running on port:${process.env.PORT}`);

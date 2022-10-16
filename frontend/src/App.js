@@ -1,6 +1,7 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./Components/Header";
+import Chatbot from "./Components/Chatbot";
 import Home from "./Pages/Home";
 import Question from "./Pages/Viewquestion";
 import PostQuestion from "./Pages/PostQuestion";
@@ -15,6 +16,7 @@ function App() {
   return (
     <Router>
       <Header />
+      <Chatbot />
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/questions" element={<Home />}></Route>

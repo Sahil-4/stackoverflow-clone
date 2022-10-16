@@ -32,7 +32,7 @@ const PostQuestion = () => {
       navigate("/login");
     }
     return () => {};
-  }, []);
+  }, [navigate, userProfile]);
 
   return (
     <div className="main question-page">

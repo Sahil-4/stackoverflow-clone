@@ -50,11 +50,9 @@ export const login = createAsyncThunk("login", async (auth_data) => {
   return data.error;
 });
 
-export const Logout =
-  ("logout",
-  () => {
-    localStorage.removeItem("userProfile");
-  });
+export const Logout = createAsyncThunk("logout", () => {
+  localStorage.removeItem("userProfile");
+});
 
 export const updateUserProfile = createAsyncThunk(
   "updateUserProfile",
@@ -167,7 +165,7 @@ const authSlice = createSlice({
     });
 
     // for logout ---------------------------------------------------------
-    builder.addCase(Logout.call, (state, action) => {
+    builder.addCase(Logout.fulfilled, (state, action) => {
       state.userProfile = null;
     });
 
