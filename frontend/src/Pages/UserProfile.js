@@ -54,32 +54,32 @@ const UserProfile = () => {
   const [myLocation, setMyLocation] = useState("");
 
   useEffect(() => {
-    window.navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const response = await fetch(
-          // change api key ----------------------------------------------------------------------------------
-          `https://api.opencagedata.com/geocode/v1/json?q=${position.coords.latitude}+${position.coords.longitude}&key=<KEY>`,
-          // change api key ----------------------------------------------------------------------------------
-          {
-            method: "get",
-          }
-        );
+    if (params.uid === "me" || params.uid === userProfile?.uid) {
+      window.navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const response = await fetch(
+            `https://api.opencagedata.com/geocode/v1/json?q=${position.coords.latitude}+${position.coords.longitude}&key=074176abe9364650840b3cda1a1b8dab`,
+            {
+              method: "get",
+            }
+          );
 
-        const data = await response.json();
-        setMyLocation(
-          `${data.results[0]?.components.city || ""} ${
-            data.results[0]?.components.state || ""
-          } ${data.results[0]?.components.country || ""}`
-        );
-      },
+          const data = await response.json();
+          setMyLocation(
+            `${data.results[0]?.components.city || ""} ${
+              data.results[0]?.components.state || ""
+            } ${data.results[0]?.components.country || ""}`
+          );
+        },
 
-      (err) => {
-        console.log(err);
-      },
-      { timeout: 60000, enableHighAccuracy: true }
-    );
+        (err) => {
+          console.log(err);
+        },
+        { timeout: 60000, enableHighAccuracy: true }
+      );
+    }
     return () => {};
-  }, []);
+  }, [params.uid, userProfile?.uid]);
 
   return (
     <div className="main container user-profile-page">
