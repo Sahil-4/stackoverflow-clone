@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Icon from "../assets/icon.png";
 import { getOTP, loginPhone } from "../redux/slice/auth";
+import PhoneInput from "react-phone-number-input";
 
 const PhoneLogin = () => {
   const [flag, setFlag] = useState(false);
@@ -63,16 +64,14 @@ const PhoneLogin = () => {
             handleLogin();
           }}
         >
-          <span>
+          <span className="phone-number-container">
             <label htmlFor="phone">Phone Number</label>
-            <input
-              type="phone"
-              id="phone"
+            <PhoneInput
+              defaultCountry="IN"
               name="phone"
-              required="True"
               value={data.phone}
-              onChange={(e) => {
-                setData({ ...data, [e.target.name]: e.target.value });
+              onChange={(value) => {
+                setData({ ...data, phone: value });
               }}
             />
           </span>

@@ -720,3 +720,13 @@
 .chat-wrapper .chat p {
     color: #00ffff;
 }
+
+.phone-number-container .PhoneInputCountryIconImg {
+    height: 100%;
+}
+
+.phone-number-container .PhoneInputCountry {
+    display: flex;
+    gap: 5px;
+    margin: 3px 0;
+}

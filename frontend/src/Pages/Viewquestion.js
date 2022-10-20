@@ -81,7 +81,16 @@ const Question = () => {
             </div>
             <div className="question-body-author-container">
               <div className="question-body-button-container">
-                <button className="button">Share</button>
+                <button
+                  className="button"
+                  onClick={() => {
+                    window.navigator.clipboard.writeText(
+                      `https://capable-platypus-fe9170.netlify.app/question/view/${question._id}`
+                    );
+                  }}
+                >
+                  Share
+                </button>
                 {userProfile?.uid === question.question_author?.id && (
                   <button
                     className="button"
@@ -99,7 +108,10 @@ const Question = () => {
                 <div>
                   <span>A</span>
                   <span>
-                    <Link to="/users/"> {question.question_author?.name}</Link>
+                    <Link to={`/users/${question.question_author?.id}`}>
+                      {" "}
+                      {question.question_author?.name}
+                    </Link>
                   </span>
                 </div>
               </div>
@@ -135,7 +147,10 @@ const Question = () => {
             <p>
               <span>A</span>
               <span>
-                <Link to="users/Alpha"> {props.answer.answer_author.name}</Link>
+                <Link to={`/users/${props.answer.answer_author?.uid}`}>
+                  {" "}
+                  {props.answer.answer_author.name}
+                </Link>
               </span>
             </p>
           </div>
@@ -164,6 +179,10 @@ const Question = () => {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
+                if (!userProfile) {
+                  navigate("/login");
+                  return;
+                }
                 dispatch(
                   postAnswer({
                     answer: {
@@ -199,7 +218,7 @@ const Question = () => {
             <p className="tags">
               Browse other questions tagged
               {question.question_tags?.map((tag, index) => (
-                <Link key={index} to={`/questions/tag==${tag}`}>
+                <Link key={index} to={`/questions/tag=${tag}`}>
                   <span>{tag}</span>
                 </Link>
               ))}

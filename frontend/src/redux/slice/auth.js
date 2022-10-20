@@ -118,10 +118,10 @@ export const loginPhone = createAsyncThunk("loginPhone", async (auth_data) => {
     if (response.status === 200) {
       return data;
     }
-
-    return data.error;
   } catch (err) {
     console.log(err);
+    alert("Invalid OTP");
+    return null;
   }
 });
 
@@ -196,7 +196,6 @@ const authSlice = createSlice({
 
     builder.addCase(getOTP.fulfilled, (state, action) => {
       state.isLoading = false;
-      console.log(action.payload);
     });
 
     builder.addCase(getOTP.rejected, (state, action) => {
