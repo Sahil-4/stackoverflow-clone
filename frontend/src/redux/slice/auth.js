@@ -81,26 +81,36 @@ export const updateUserProfile = createAsyncThunk(
 );
 
 export const getOTP = createAsyncThunk("getOTP", async (data) => {
-  // set up reCaptcha
-  const recaptchaVerifier = new RecaptchaVerifier(
-    "recaptcha-container",
-    {
-      size: "normal",
-      callback: (response) => {
-        data.setFlag(true);
+  try {
+    // set up reCaptcha after clearing old one
+    window.recaptchaVerifier?.clear();
+    const recaptchaVerifier = new RecaptchaVerifier(
+      "recaptcha-container",
+      {
+        size: "normal",
+        callback: async (res) => {
+          data.setFlag(true);
+          try {
+            // send otp
+            const response = await signInWithPhoneNumber(
+              auth,
+              data.phone,
+              recaptchaVerifier
+            );
+            data.setConfirmationResult(response);
+          } catch (err) {
+            console.log(err);
+            alert("OTP limit reached");
+          }
+        },
       },
-    },
-    auth
-  );
-  recaptchaVerifier.render();
-
-  // send otp
-  const response = await signInWithPhoneNumber(
-    auth,
-    data.phone,
-    recaptchaVerifier
-  );
-  data.setConfirmationResult(response);
+      auth
+    );
+    recaptchaVerifier.render();
+  } catch (err) {
+    console.log(err);
+    alert("Not able to send OTP.");
+  }
 });
 
 export const loginPhone = createAsyncThunk("loginPhone", async (auth_data) => {
@@ -201,7 +211,7 @@ const authSlice = createSlice({
     builder.addCase(getOTP.rejected, (state, action) => {
       state.isLoading = false;
       state.error = true;
-      console.log(action.payload);
+      console.log("not able to send otp");
     });
 
     // login using phone and otp

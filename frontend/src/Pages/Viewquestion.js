@@ -14,22 +14,20 @@ import {
 const Question = () => {
   const params = useParams();
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
+
   const question_list = useSelector((state) => state.questions.question_list);
-  const question_current = useSelector(
-    (state) => state.questions.question_current
-  );
   const userProfile = useSelector((state) => state.auth.userProfile);
 
   const [question, setQuestion] = useState({});
+  const [answer, setAnswer] = useState("");
 
   useEffect(() => {
-    if (!question_list) {
+    if (!question_list && userProfile) {
       dispatch(fetchAllQuestions());
     }
     return () => {};
-  }, [dispatch, question_list]);
+  }, [dispatch, question_list, userProfile]);
 
   useEffect(() => {
     question_list?.forEach((element) => {
@@ -39,14 +37,11 @@ const Question = () => {
     });
   }, [params.uid, question_list]);
 
-  const [answer, setAnswer] = useState("");
-
-  useEffect(() => {
-    if (question_current) {
-      setQuestion(question_current);
-    }
-    return () => {};
-  }, [question_current]);
+  const handleShare = () => {
+    window.navigator.clipboard.writeText(
+      `https://capable-platypus-fe9170.netlify.app/question/view/${question._id}`
+    );
+  };
 
   const Questionbody = () => {
     return (
@@ -81,14 +76,7 @@ const Question = () => {
             </div>
             <div className="question-body-author-container">
               <div className="question-body-button-container">
-                <button
-                  className="button"
-                  onClick={() => {
-                    window.navigator.clipboard.writeText(
-                      `https://capable-platypus-fe9170.netlify.app/question/view/${question._id}`
-                    );
-                  }}
-                >
+                <button className="button" onClick={handleShare}>
                   Share
                 </button>
                 {userProfile?.uid === question.question_author?.id && (
@@ -128,7 +116,9 @@ const Question = () => {
         <p>{props.answer.answer_body}</p>
         <div className="question-body-author-container">
           <div className="question-body-button-container">
-            <button className="button">Share</button>
+            <button className="button" onClick={handleShare}>
+              Share
+            </button>
             {userProfile?.uid === props.answer.answer_author?.uid && (
               <button
                 className="button"

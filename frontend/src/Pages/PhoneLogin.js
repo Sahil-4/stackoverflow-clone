@@ -15,6 +15,9 @@ const PhoneLogin = () => {
   const userProfile = useSelector((state) => state.auth.userProfile);
 
   const handleGetOTP = () => {
+    document.getElementById("recaptcha-container").innerHTML = "";
+    setFlag(false);
+    setData({ ...data, otp: "" });
     if (data.phone !== "") {
       dispatch(
         getOTP({
@@ -94,7 +97,7 @@ const PhoneLogin = () => {
               value={data.otp}
               required="True"
               onChange={(e) => {
-                setData({ ...data, [e.target.name]: e.target.value });
+                setData({ ...data, otp: e.target.value });
               }}
             />
           </span>
@@ -103,6 +106,7 @@ const PhoneLogin = () => {
           </button>
           <button
             className={`${flag ? "" : "hidden"}`}
+            type="button"
             onClick={() => {
               handleGetOTP();
             }}

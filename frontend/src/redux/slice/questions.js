@@ -128,7 +128,6 @@ const questionsSlice = createSlice({
   initialState: {
     isLoading: false,
     question_list: null,
-    question_current: null,
     error: false,
   },
 
@@ -208,7 +207,6 @@ const questionsSlice = createSlice({
 
     builder.addCase(postAnswer.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.question_current = action.payload;
       let ls = state.question_list.forEach((question) => {
         if (question._id !== action.payload._id) {
           return question;

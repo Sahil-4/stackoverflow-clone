@@ -7,14 +7,15 @@ import { getAllUsers } from "../redux/slice/users";
 
 const Users = () => {
   const users = useSelector((state) => state.users);
+  const userProfile = useSelector((state) => state.auth.userProfile);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!users.users) {
+    if (userProfile) {
       dispatch(getAllUsers());
     }
     return () => {};
-  }, [dispatch, users.users]);
+  }, [dispatch, userProfile]);
 
   const Profile = (props) => {
     return (
@@ -38,9 +39,10 @@ const Users = () => {
       <div className="users-profile-container">
         <h1>All Users</h1>
         <div className="all-profiles">
-          {users.users?.map((user) => {
-            return <Profile key={user._id} user={user} />;
-          })}
+          {userProfile &&
+            users.users?.map((user) => {
+              return <Profile key={user._id} user={user} />;
+            })}
         </div>
       </div>
     </div>
