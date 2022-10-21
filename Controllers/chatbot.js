@@ -1,51 +1,67 @@
 const Query = require("../Models/chatbot_query");
+const SerpApi = require("google-search-results-nodejs");
+const search = new SerpApi.GoogleSearch(process.env.SerpApiKey);
 
 const add_queries = async (data) => {
   // add a new query in db
   const query = await Query.create({
     keywords: data.keywords,
-    answer: {
-      message: data.answer?.message || "",
-      author: false,
-    },
+    answer: data.answer,
   });
 
   return query;
 };
 
-exports.handleBot = async (req, res) => {
-  // get all bot queries
-  // find bot queries keywords in queries
-  // if all keywords found return that query answer
-  // if no query keyword matched
-  // add that query in db
-  // find query in questions
-  // if found return that questions answer
-  // if nothing matched
-  // return no match reply
+const getQuery = async (query) => {
   try {
-    // get all queries
-    let all_queries = await Query.find({});
+    let data = null;
+    const result = new Promise((resolve, reject) => {
+      search.json(
+        {
+          q: query,
+        },
+        (result) => resolve(result)
+      );
+    });
 
-    // find match in query
-    const query = req.body.query;
-    let f = -1;
-    for (let i = 0; i < all_queries.length; i++) {
-      const { keywords } = all_queries[i];
-      for (let j = 0; j < keywords.length; j++) {
-        f = query.toLowerCase().search(keywords[j]);
-        if (f === -1) break;
+    await result.then(
+      (res) => {
+        data =
+          res.knowledge_graph?.description ||
+          (res.related_questions ?? [])[0]?.snippet;
+      },
+      (err) => {
+        console.log(err);
       }
+    );
 
-      if (f !== -1 && all_queries[i].answer.message) {
-        // return response if match found
-        return res.json(all_queries[i].answer);
-      }
+    return data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+exports.handleBot = async (req, res) => {
+  try {
+    // handle bot queries
+    let query = req.body.query;
+
+    // find query in db
+    const qr = await Query.find({ keywords: query.split(" ") });
+    if (qr && qr[0]?.answer.message) {
+      return res.json(qr[0].answer);
     }
 
-    if (f === -1) {
-      // if no match found add the query in db
-      await add_queries({ keywords: query.split(" ") });
+    let message = await getQuery(query);
+    if (message) {
+      // add new query in db
+      await add_queries({
+        keywords: query.split(" "),
+        answer: { message: message, author: false },
+      });
+
+      return res.json({ message: message, author: false });
     }
 
     // return apology
