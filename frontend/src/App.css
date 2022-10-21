@@ -173,8 +173,6 @@
     margin: 0 5px;
 }
 
-.hot-topics div ol li span {}
-
 .watched-tags {
     margin-top: 32px;
 }
@@ -423,7 +421,6 @@
     height: 100%;
     overflow: scroll;
     width: 1080px;
-    background-color: #c59797;
 }
 
 .user-profile {
@@ -437,29 +434,53 @@
     flex-basis: 1;
 }
 
-.user-profile-image-container img {
+.user-profile-name p {
+    margin: 7px 0;
+}
+
+.user-profile-image-container span {
     height: 150px;
     width: 150px;
+    font-size: 128px;
+    display: block;
+    text-align: center;
+    margin: 0 5px;
+    color: #fff;
+    background-color: #391349;
 }
 
 .edit-profile-btn {
-    padding: 3px;
+    padding: 5px;
     margin: 5px;
     border: 1px solid;
-    background-color: #b3d3ea;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+}
+
+.edit-profile-btn img {
+    margin: 0 5px 0 0;
 }
 
 .user-profile-summary {
     padding: 6px;
 }
 
+.user-profile-summary>div {
+    margin: 7px 0;
+}
+
 .user-profile-watched-tags-container span {
     width: fit-content;
     margin: 5px;
     display: block;
-    border: 1px solid;
     text-align: center;
-    padding: 3px;
+}
+
+.user-about-container p {
+    padding: 7px 0;
 }
 
 .hidden {
@@ -492,8 +513,6 @@
     height: 28px;
     padding: 5px;
 }
-
-/* ************************ */
 
 .question-page>div {
     position: absolute;

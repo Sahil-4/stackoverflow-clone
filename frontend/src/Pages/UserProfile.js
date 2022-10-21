@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../Components/Sidebar";
-import UserImage from "../assets/user.png";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllUsers } from "../redux/slice/users";
 import { updateUserProfile } from "../redux/slice/auth";
 import moment from "moment";
+import pen from "../assets/pen-solid.svg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBirthdayCake } from "@fortawesome/free-solid-svg-icons";
 
 const UserProfile = () => {
   const navigate = useNavigate();
@@ -88,11 +90,14 @@ const UserProfile = () => {
       <div className="user-profile-container">
         <div className="user-profile">
           <div className="user-profile-image-container">
-            <img src={UserImage} alt="" />
+            <span>{profile.username && profile.username[0]}</span>
           </div>
           <div className="user-profile-name">
             <h3>{profile.username}</h3>
-            <p>{moment(profile.timestamp).fromNow()}</p>
+            <p>
+              <FontAwesomeIcon icon={faBirthdayCake} /> Joined{" "}
+              {moment(profile.timestamp).fromNow()}
+            </p>
             <p>{myLocation}</p>
           </div>
           <div>
@@ -102,7 +107,9 @@ const UserProfile = () => {
                   setEditMode(!editMode);
                 }}
               >
-                <span className="button edit-profile-btn">Edit Profile</span>
+                <span className="button edit-profile-btn">
+                  <img src={pen} alt="edit" className="H100" /> Edit Profile
+                </span>
               </Link>
             )}
           </div>
@@ -110,7 +117,7 @@ const UserProfile = () => {
 
         <div className={`user-profile-summary ${editMode ? "hidden" : ""}`}>
           <div className="user-profile-watched-tags-container">
-            <h4>Watched Tags</h4>
+            <h4>{profile.watched_tags?.length === 0 && "0 "}Tags Watched</h4>
             <p>
               {profile.watched_tags?.map((tags, index) => {
                 return <span key={index}>{tags}</span>;
@@ -118,7 +125,7 @@ const UserProfile = () => {
             </p>
           </div>
           <div className="user-about-container">
-            <h4>About</h4>
+            <h4>{profile.about ? "About" : "No bio found"}</h4>
             <p>{profile.about}</p>
           </div>
         </div>
