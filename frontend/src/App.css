@@ -328,24 +328,34 @@
     width: 75vw;
     display: flex;
     flex-wrap: wrap;
+    gap: 18px;
 }
 
 .profile-card {
-    overflow: hidden;
-    border: 1px solid;
-    margin: 13px;
-}
-
-.profile-image-container img {
-    height: 120px;
-    width: 120px;
-    display: block;
-    margin: 0 auto;
-    object-fit: contain;
-}
-
-.profile-card .info {
+    height: fit-content;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px;
     margin: 5px;
+    padding: 3px;
+}
+
+.profile-card .profile-name-container {
+    height: 28px;
+    width: 28px;
+    background-color: #d3d3d3;
+    border-radius: 50%;
+}
+
+.profile-card .profile-name-container span {
+    height: fit-content;
+    width: fit-content;
+    display: block;
+    font-size: 1.3rem;
+    margin-top: 50%;
+    margin-left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .signup-page {

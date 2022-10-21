@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import Sidebar from "../Components/Sidebar";
-import UserImage from "../assets/user.png";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllUsers } from "../redux/slice/users";
@@ -20,14 +19,13 @@ const Users = () => {
   const Profile = (props) => {
     return (
       <div className="profile-card">
-        <div className="profile-image-container">
-          <img src={UserImage} alt="user" />
+        <div className="profile-name-container">
+          <span>{props.user.username[0]}</span>
         </div>
         <div className="info">
           <Link to={`/users/${props.user._id}`}>
             <h4>{props.user.username}</h4>
           </Link>
-          <p>{props.user.about}</p>
         </div>
       </div>
     );

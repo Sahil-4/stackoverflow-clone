@@ -9,7 +9,7 @@ export const handleChat = createAsyncThunk("handlechat", async (msg) => {
       "Content-type": "application/json",
     },
     body: JSON.stringify({
-      query: msg.message,
+      query: msg.message.trim(),
     }),
   });
 
