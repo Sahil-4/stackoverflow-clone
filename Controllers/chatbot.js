@@ -1,11 +1,11 @@
 const Query = require("../Models/chatbot_query");
 
-const add_queries = async (data) => {npm
+const add_queries = async (data) => {
   // add a new query in db
   const query = await Query.create({
     keywords: data.keywords,
     answer: {
-      message: data.answer?.message,
+      message: data.answer?.message || "",
       author: false,
     },
   });
@@ -29,9 +29,9 @@ exports.handleBot = async (req, res) => {
 
     // find match in query
     const query = req.body.query;
+    let f = -1;
     for (let i = 0; i < all_queries.length; i++) {
       const { keywords } = all_queries[i];
-      let f = -1;
       for (let j = 0; j < keywords.length; j++) {
         f = query.toLowerCase().search(keywords[j]);
         if (f === -1) break;
@@ -43,8 +43,10 @@ exports.handleBot = async (req, res) => {
       }
     }
 
-    // if no match found add the query in db
-    add_queries({ keywords: query.split(" ") });
+    if (f === -1) {
+      // if no match found add the query in db
+      await add_queries({ keywords: query.split(" ") });
+    }
 
     // return apology
     return res.json({
